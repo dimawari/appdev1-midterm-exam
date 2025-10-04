@@ -594,3 +594,44 @@ body {
         justify-content: center;
     }
 }
+
+
+/* ===================================================
+   10. SCROLL ANIMATIONS (Kailangan ng JS Hook para gumana)
+   =================================================== */
+
+/* -------------------- FADE-IN EFFECT -------------------- */
+.fade-in {
+    opacity: 0; /* Simulan nang naka-tago */
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Kapag idinagdag ng JS ang 'is-visible' class */
+.fade-in.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.slide-in-left {
+    opacity: 0;
+    transform: translateX(-100px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.slide-in-left.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Right to Left */
+.slide-in-right {
+    opacity: 0;
+    transform: translateX(100px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.slide-in-right.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
