@@ -2,7 +2,7 @@ import './App.css';
 
 function App() {
   return (
-    // 2. JSX Structure: Gamitin ang `className` para i-apply ang styles.
+  
     <div className="App">
         {/* Navigation Section */}
         <nav className="scrolled">
