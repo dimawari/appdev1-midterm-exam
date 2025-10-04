@@ -292,7 +292,7 @@ body {
     width: 100%;
     height: 500px;
     /* Palitan ito ng actual image path kung meron ka */
-    background: url('images/smiling-girl-computer-desktop.jpg') center/cover;
+    background: url('/public/images/smiling-girl-computer-desktop.jpg') center/cover;
     background-color: var(--gradient-primary); /* Fallback */
     border-radius: 30px;
     position: relative;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import './App.css'; 
+import useAnimateOnScroll from './useAnimateOnScroll.js'; 
 
 function App() {
     // State para sa Mobile Menu
@@ -8,13 +9,20 @@ function App() {
     // State para sa Scrolled Navigation
     const [isScrolled, setIsScrolled] = useState(false);
 
+    // 👈 I-initialize ang mga hooks para sa animation
+    const aboutTitleAnim = useAnimateOnScroll(0.3); // 30% visibility
+    const aboutImageAnim = useAnimateOnScroll(0.3);
+    const aboutTextAnim = useAnimateOnScroll(0.3);
+    const contactTitleAnim = useAnimateOnScroll(0.3);
+    const contactFormAnim = useAnimateOnScroll(0.3);
+
+
     // Handler para i-toggle ang menu
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
     // Handler para i-close ang menu kapag nag-click sa link
     const handleNavLinkClick = () => {
         setIsMenuOpen(false);
-        // Add scroll animation logic if needed here
     };
 
     // Scroll Listener Logic (Nav Scrolled)
@@ -107,10 +115,24 @@ function App() {
             {/* About Section */}
             <section id="about" className="about">
                 <div className="container">
-                    <h2 className="section-title fade-in">About Me</h2>
+                 
+                    <h2 
+                        className={`section-title fade-in ${aboutTitleAnim.isVisible ? 'is-visible' : ''}`}
+                        ref={aboutTitleAnim.ref}
+                    >
+                        About Me
+                    </h2>
                     <div className="about-content">
-                        <div className="about-image slide-in-left" />
-                        <div className="about-text slide-in-right">
+                        {/* IMAGE: I-apply ang animation hook at 'is-visible' class */}
+                        <div 
+                            className={`about-image slide-in-left ${aboutImageAnim.isVisible ? 'is-visible' : ''}`}
+                            ref={aboutImageAnim.ref}
+                        />
+                        {/* TEXT: I-apply ang animation hook at 'is-visible' class */}
+                        <div 
+                            className={`about-text slide-in-right ${aboutTextAnim.isVisible ? 'is-visible' : ''}`}
+                            ref={aboutTextAnim.ref}
+                        >
                             <h3>Passionate about creating meaningful digital experiences</h3>
                             <p>
                                 With over 5 years of experience in digital design, I specialize in
@@ -179,7 +201,7 @@ function App() {
                                 <div className="portfolio-tech">
                                     <span className="tech-tag">Figma</span>
                                     <span className="tech-tag">Principle</span>
-                                    <span className="tech-tag">React Native</span>
+                                    <span className="tech-tag">Tech Stack</span>
                                     <span className="tech-tag">Lottie</span>
                                 </div>
                             </div>
@@ -239,13 +261,23 @@ function App() {
                 </div>
                 <div className="container">
                     <div className="contact-content">
-                        <h2 className="section-title fade-in">Let's Work Together</h2>
+                        {/* TITLE: I-apply ang animation hook at 'is-visible' class */}
+                        <h2 
+                            className={`section-title fade-in ${contactTitleAnim.isVisible ? 'is-visible' : ''}`}
+                            ref={contactTitleAnim.ref}
+                        >
+                            Let's Work Together
+                        </h2>
                         <p className="fade-in">
                             Ready to bring your vision to life? Let's discuss how we can create
                             something amazing together. I'm always excited to take on new
                             challenges and collaborate on innovative projects.
                         </p>
-                        <form className="contact-form fade-in">
+                        {/* FORM: I-apply ang animation hook at 'is-visible' class */}
+                        <form 
+                            className={`contact-form fade-in ${contactFormAnim.isVisible ? 'is-visible' : ''}`}
+                            ref={contactFormAnim.ref}
+                        >
                             <div className="form-row">
                                 <div className="form-group">
                                     <label htmlFor="name">Name</label>
@@ -322,10 +354,6 @@ function App() {
         </React.Fragment>
     );
 }
-
-// =======================================================================
-// RENDER THE APP
-// =======================================================================
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
