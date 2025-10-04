@@ -1,112 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
+import './App.css'; // 👈 IMPORTANTE: Dito namin kukunin ang lahat ng styling!
 
-
-const styles = {
-    rootVariables: {
-        '--primary-color': '#6366f1',
-        '--text-light': '#ffffff',
-        '--bg-primary': '#ffffff',
-        '--bg-secondary': '#f8fafc',
-        '--text-primary': '#0f172a',
-        '--text-secondary': '#64748b',
-        '--gradient-elegant': 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
-        '--shadow-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-        '--shadow-2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-        '--bg-card': 'rgba(255, 255, 255, 0.95)',
-    },
-    
-    globalBody: {
-        fontFamily: "'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif",
-        lineHeight: 1.7,
-        color: '#0f172a', // text-primary
-        scrollBehavior: 'smooth',
-        overflowX: 'hidden',
-        background: '#ffffff', // bg-primary
-        margin: 0,
-        padding: 0,
-        boxSizing: 'border-box',
-    },
-
-    nav: {
-        position: 'fixed',
-        top: 0,
-        width: '100%',
-        background: 'rgba(255, 255, 255, 0.95)',
-        backdropFilter: 'blur(20px)',
-        zIndex: 1000,
-        padding: '1rem 0',
-        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-    },
-
-    navScrolled: {
-        background: 'rgba(255, 255, 255, 0.98)',
-        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)', // shadow-lg
-        padding: '0.75rem 0',
-    },
-
-    navContainer: {
-        maxWidth: '1400px',
-        margin: '0 auto',
-        padding: '0 2rem',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-
-    logo: {
-        fontSize: '1.75rem',
-        fontWeight: 700,
-        color: '#6366f1', 
-        letterSpacing: '-0.5px',
-    },
-    
-   
-    mobileMenuToggle: {
-        display: 'none', 
-        flexDirection: 'column',
-        cursor: 'pointer',
-        padding: '0.5rem',
-        zIndex: 1001,
-    },
-    hamburger: {
-        width: '25px',
-        height: '3px',
-        background: '#0f172a', // text-primary
-        margin: '3px 0',
-        transition: 'all 0.3s ease',
-        borderRadius: '1px',
-    },
-    mobileMenu: (isOpen) => ({
-        position: 'fixed',
-        top: 0,
-        right: isOpen ? '0' : '-100%',
-        width: '100%',
-        height: '100vh',
-        background: 'rgba(15, 23, 42, 0.98)',
-        backdropFilter: 'blur(20px)',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        transition: 'right 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-        zIndex: 999,
-    }),
-    mobileNavLinks: {
-        listStyle: 'none',
-        textAlign: 'center',
-        padding: 0,
-    },
-    mobileNavLinkA: {
-        fontSize: '2.5rem',
-        fontWeight: 500,
-        color: '#ffffff', // text-light
-        textDecoration: 'none',
-        display: 'block',
-        padding: '15px 0',
-    }
-};
+// =======================================================================
+// APP COMPONENT
+// =======================================================================
 
 function App() {
     // State para sa Mobile Menu
@@ -118,16 +16,18 @@ function App() {
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
     // Handler para i-close ang menu kapag nag-click sa link
-    const handleNavLinkClick = () => setIsMenuOpen(false);
+    const handleNavLinkClick = () => {
+        setIsMenuOpen(false);
+        // Add scroll animation logic if needed here
+    };
 
-    // useEffect para sa Scroll Listener
+    // Scroll Listener Logic (Nav Scrolled)
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 50);
         };
 
         window.addEventListener('scroll', handleScroll);
-
         // Cleanup function
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
@@ -137,17 +37,18 @@ function App() {
         document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
     };
     
-    // Combined Nav Style based on scroll state
-    const navStyle = {
-        ...styles.nav,
-        ...(isScrolled ? styles.navScrolled : {}),
-    };
+    // Class names for conditional styling
+    const navClassName = isScrolled ? "scrolled" : "";
+    const menuClassName = isMenuOpen ? "active" : "";
 
     return (
-        <>
-            <nav id="navbar" style={navStyle}>
-                <div style={styles.navContainer}>
-                    <div className="logo" style={styles.logo}>Personal Shape</div>
+        <React.Fragment>
+
+            {/* Navigation Bar */}
+            <nav id="navbar" className={navClassName}>
+                <div className="nav-container">
+                    <div className="logo">Personal Shape</div>
+                    {/* Desktop Links (Hidden sa mobile via CSS) */}
                     <ul className="nav-links">
                         <li><a href="#home">Home</a></li>
                         <li><a href="#about">About</a></li>
@@ -155,69 +56,88 @@ function App() {
                         <li><a href="#contact">Contact</a></li>
                     </ul>
                     
-                    {/* Mobile Menu Toggle */}
+                    {/* Mobile Menu Toggle/Hamburger */}
                     <div 
-                        className="mobile-menu-toggle" 
+                        className={`mobile-menu-toggle ${menuClassName}`}
                         id="mobileMenuToggle"
-                        style={{...styles.mobileMenuToggle, display: 'flex'}} // In-overwrite ang display: none
                         onClick={toggleMenu}
                     >
-                        {/* Hamburger lines: Kailangan ng conditional styles para sa X animation */}
-                        <div className="hamburger" style={styles.hamburger} />
-                        <div className="hamburger" style={styles.hamburger} />
-                        <div className="hamburger" style={styles.hamburger} />
+                        {/* Hamburger lines (CSS ang mag-a-animate sa kanila) */}
+                        <div className="hamburger" />
+                        <div className="hamburger" />
+                        <div className="hamburger" />
                     </div>
                 </div>
             </nav>
             
-            {/* Mobile Menu Content */}
-            <div className="mobile-menu" id="mobileMenu" style={styles.mobileMenu(isMenuOpen)}>
-                <ul className="mobile-nav-links" style={styles.mobileNavLinks}>
-                    <li><a href="#home" style={styles.mobileNavLinkA} onClick={handleNavLinkClick}>Home</a></li>
-                    <li><a href="#about" style={styles.mobileNavLinkA} onClick={handleNavLinkClick}>About</a></li>
-                    <li><a href="#portfolio" style={styles.mobileNavLinkA} onClick={handleNavLinkClick}>Portfolio</a></li>
-                    <li><a href="#contact" style={styles.mobileNavLinkA} onClick={handleNavLinkClick}>Contact</a></li>
+            {/* Mobile Menu Content (Active state controlled by className) */}
+            <div className={`mobile-menu ${menuClassName}`} id="mobileMenu">
+                <ul className="mobile-nav-links">
+                    <li><a href="#home" onClick={handleNavLinkClick}>Home</a></li>
+                    <li><a href="#about" onClick={handleNavLinkClick}>About</a></li>
+                    <li><a href="#portfolio" onClick={handleNavLinkClick}>Portfolio</a></li>
+                    <li><a href="#contact" onClick={handleNavLinkClick}>Contact</a></li>
                 </ul>
             </div>
             
             {/* Hero Section */}
-            <section id="home" className="hero" style={{...styles.section, ...styles.hero}}>
+            <section id="home" className="hero">
                 <div className="floating-shapes">
-                    <div className="shape shape-1" style={styles.shape1} />
-                    {/* ... other shapes (2-6) ... */}
+                    <div className="shape shape-1" />
+                    <div className="shape shape-2" />
+                    <div className="shape shape-3" />
+                    <div className="shape shape-4" />
+                    <div className="shape shape-5" />
+                    <div className="shape shape-6" />
                 </div>
-                <div className="hero-content" style={styles.heroContent}>
-                    <div className="hero-subtitle" style={styles.heroSubtitle}>Creative Designer</div>
-                    <h1 style={styles.heroH1}>Transforming Ideas Into Beautiful Experiences</h1>
-                    <p className="subtitle" style={styles.heroSubtitleP}>
+                <div className="hero-content">
+                    <div className="hero-subtitle">Creative Designer</div>
+                    <h1>Transforming Ideas Into Beautiful Experiences</h1>
+                    <p className="subtitle">
                         I craft digital experiences that captivate, engage, and inspire through
                         thoughtful design and innovative solutions
                     </p>
-                    <a href="#portfolio" className="cta-button" style={styles.ctaButton}>
+                    <a href="#portfolio" className="cta-button">
                         Explore My Work
                     </a>
                 </div>
-                {/* JSX onclick event is now a React onClick prop */}
+                {/* JSX onClick event */}
                 <div
                     className="scroll-indicator"
                     onClick={scrollToAbout} 
-                    style={styles.scrollIndicator}
                 />
             </section>
             
             {/* About Section */}
-            <section id="about" className="about" style={{...styles.section, ...styles.about}}>
-                <div className="container" style={styles.container}>
-                    <h2 className="section-title fade-in" style={styles.sectionTitle}>About Me</h2>
-                    <div className="about-content" style={styles.aboutContent}>
-                        <div className="about-image slide-in-left" style={styles.aboutImage} />
+            <section id="about" className="about">
+                <div className="container">
+                    <h2 className="section-title fade-in">About Me</h2>
+                    <div className="about-content">
+                        <div className="about-image slide-in-left" />
                         <div className="about-text slide-in-right">
-                            <h3 style={styles.aboutTextH3}>Passionate about creating meaningful digital experiences</h3>
-                            {/* ... more text paragraphs ... */}
-                            <div className="skills" style={styles.skills}>
-                                <span className="skill-tag" style={styles.skillTag}>UI/UX Design</span>
-                                <span className="skill-tag" style={styles.skillTag}>Web Development</span>
-                                {/* ... other skill tags ... */}
+                            <h3>Passionate about creating meaningful digital experiences</h3>
+                            <p>
+                                With over 5 years of experience in digital design, I specialize in
+                                creating user-centered solutions that bridge the gap between
+                                functionality and aesthetics. My approach combines strategic
+                                thinking with creative execution to deliver impactful results.
+                            </p>
+                            <p>
+                                I believe that great design is not just about how it looks, but how
+                                it works and how it makes people feel. Every project is an
+                                opportunity to solve problems and create connections that matter.
+                            </p>
+                            <p>
+                                When I'm not designing, you'll find me exploring new technologies,
+                                sketching ideas, or seeking inspiration in nature and architecture.
+                            </p>
+                            <div className="skills">
+                                <span className="skill-tag">UI/UX Design</span>
+                                <span className="skill-tag">Web Development</span>
+                                <span className="skill-tag">Brand Identity</span>
+                                <span className="skill-tag">Motion Graphics</span>
+                                <span className="skill-tag">Prototyping</span>
+                                <span className="skill-tag">Design Systems</span>
                             </div>
                         </div>
                     </div>
@@ -225,70 +145,197 @@ function App() {
             </section>
             
             {/* Portfolio Section */}
-            <section id="portfolio" className="portfolio" style={{...styles.section, ...styles.portfolio}}>
-                <div className="container" style={styles.container}>
-                    <h2 className="section-title fade-in" style={styles.sectionTitle}>Featured Work</h2>
-                    <div className="portfolio-grid" style={styles.portfolioGrid}>
-                        {/* Portfolio Items - Kailangan gawing component ito sa mas malaking app */}
-                        <div className="portfolio-item" style={styles.portfolioItem}>
-                             <div className="portfolio-image" style={{...styles.portfolioImage, background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}} />
-                            <div className="portfolio-content" style={styles.portfolioContent}>
-                                <h4 style={styles.portfolioContentH4}>E-commerce Platform</h4>
-                                <p style={styles.portfolioContentP}>A modern, responsive e-commerce solution...</p>
-                                <div className="portfolio-tech" style={styles.portfolioTech}>
-                                    <span className="tech-tag" style={styles.techTag}>React</span>
-                                    {/* ... more tech tags ... */}
+            <section id="portfolio" className="portfolio">
+                <div className="container">
+                    <h2 className="section-title fade-in">Featured Work</h2>
+                    <div className="portfolio-grid">
+                        <div className="portfolio-item">
+                            <div className="portfolio-image" />
+                            <div className="portfolio-content">
+                                <h4>E-commerce Platform</h4>
+                                <p>A modern, responsive e-commerce solution with focus on user experience and conversion optimization. Built with scalability and performance in mind.</p>
+                                <div className="portfolio-tech">
+                                    <span className="tech-tag">React</span>
+                                    <span className="tech-tag">Node.js</span>
+                                    <span className="tech-tag">MongoDB</span>
+                                    <span className="tech-tag">Stripe</span>
                                 </div>
                             </div>
                         </div>
-                        {/* ... iba pang portfolio items ... */}
+                        <div className="portfolio-item">
+                            <div className="portfolio-image" />
+                            <div className="portfolio-content">
+                                <h4>Brand Identity System</h4>
+                                <p>Complete visual identity redesign for a tech startup, including logo, guidelines, and digital assets. Creating a cohesive brand experience across all touchpoints.</p>
+                                <div className="portfolio-tech">
+                                    <span className="tech-tag">Illustrator</span>
+                                    <span className="tech-tag">Photoshop</span>
+                                    <span className="tech-tag">Figma</span>
+                                    <span className="tech-tag">After Effects</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="portfolio-item">
+                            <div className="portfolio-image" />
+                            <div className="portfolio-content">
+                                <h4>Mobile App Design</h4>
+                                <p>Intuitive mobile app interface for a fitness tracking application with focus on accessibility and user engagement through gamification.</p>
+                                <div className="portfolio-tech">
+                                    <span className="tech-tag">Figma</span>
+                                    <span className="tech-tag">Principle</span>
+                                    <span className="tech-tag">React Native</span>
+                                    <span className="tech-tag">Lottie</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="portfolio-item">
+                            <div className="portfolio-image" />
+                            <div className="portfolio-content">
+                                <h4>Dashboard Interface</h4>
+                                <p>Clean and functional dashboard design for data analytics platform with complex information architecture and real-time data visualization.</p>
+                                <div className="portfolio-tech">
+                                    <span className="tech-tag">Vue.js</span>
+                                    <span className="tech-tag">D3.js</span>
+                                    <span className="tech-tag">SCSS</span>
+                                    <span className="tech-tag">Chart.js</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="portfolio-item">
+                            <div className="portfolio-image" />
+                            <div className="portfolio-content">
+                                <h4>Marketing Website</h4>
+                                <p>Modern marketing website with interactive animations and optimized conversion funnels. Built for maximum performance and SEO.</p>
+                                <div className="portfolio-tech">
+                                    <span className="tech-tag">Next.js</span>
+                                    <span className="tech-tag">Framer Motion</span>
+                                    <span className="tech-tag">Tailwind CSS</span>
+                                    <span className="tech-tag">Vercel</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="portfolio-item">
+                            <div className="portfolio-image" />
+                            <div className="portfolio-content">
+                                <h4>Creative Portfolio</h4>
+                                <p>Artistic portfolio website featuring immersive galleries, smooth transitions, and creative storytelling for a digital artist.</p>
+                                <div className="portfolio-tech">
+                                    <span className="tech-tag">React</span>
+                                    <span className="tech-tag">Three.js</span>
+                                    <span className="tech-tag">GSAP</span>
+                                    <span className="tech-tag">WebGL</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
             
             {/* Contact Section */}
-            <section id="contact" className="contact" style={{...styles.section, ...styles.contact}}>
-                <div className="container" style={styles.container}>
-                    <div className="contact-content" style={styles.contactContent}>
-                        <h2 className="section-title fade-in" style={{...styles.sectionTitle, ...styles.contactSectionTitle}}>Let's Work Together</h2>
+            <section id="contact" className="contact">
+                <div className="contact-floating-shapes">
+                    <div className="contact-shape contact-shape-1" />
+                    <div className="contact-shape contact-shape-2" />
+                    <div className="contact-shape contact-shape-3" />
+                    <div className="contact-shape contact-shape-4" />
+                    <div className="contact-shape contact-shape-5" />
+                    <div className="contact-shape contact-shape-6" />
+                </div>
+                <div className="container">
+                    <div className="contact-content">
+                        <h2 className="section-title fade-in">Let's Work Together</h2>
                         <p className="fade-in">
-                            Ready to bring your vision to life? Let's discuss how we can create something amazing together.
+                            Ready to bring your vision to life? Let's discuss how we can create
+                            something amazing together. I'm always excited to take on new
+                            challenges and collaborate on innovative projects.
                         </p>
-                        
-                  
-                        <form className="contact-form fade-in" style={styles.contactForm}>
-                             {/* ... form fields and button ... */}
+                        <form className="contact-form fade-in">
+                            <div className="form-row">
+                                <div className="form-group">
+                                    <label htmlFor="name">Name</label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        placeholder="Your full name"
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="email">Email</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        placeholder="your.email@example.com"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="subject">Subject</label>
+                                <input
+                                    type="text"
+                                    id="subject"
+                                    name="subject"
+                                    placeholder="What's this about?"
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="message">Message</label>
+                                <textarea
+                                    id="message"
+                                    name="message"
+                                    rows={6}
+                                    placeholder="Tell me about your project..."
+                                    required
+                                    defaultValue={""}
+                                />
+                            </div>
+                            <button type="submit" className="submit-btn">
+                                Send Message
+                            </button>
                         </form>
                     </div>
                 </div>
             </section>
             
             {/* Footer */}
-            <footer className="footer" style={styles.footer}>
-                <div className="container" style={styles.container}>
-                    <div className="footer-content" style={styles.footerContent}>
+            <footer className="footer">
+                <div className="container">
+                    <div className="footer-content">
                         <div className="footer-left">
-                            <p style={styles.footerLeftP}>© 2025 Personal Shape. All rights reserved.</p>
+                            <p>© 2025 Personal Shape. All rights reserved.</p>
                         </div>
-                        <div className="footer-right" style={styles.footerRight}>
-                            <a href="#privacy" style={styles.footerRightA}>Privacy Policy</a>
-                            {/* ... iba pang links ... */}
+                        <div className="footer-right">
+                            <a href="#privacy">Privacy Policy</a>
+                            <a href="#terms">Terms of Use</a>
+                            <a href="#sitemap">Sitemap</a>
+                            <a
+                                href="https://templatemo.com"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Provided by TemplateMo
+                            </a>
                         </div>
                     </div>
                 </div>
             </footer>
-            
-        </>
+        </React.Fragment>
     );
 }
 
+// =======================================================================
+// RENDER THE APP
+// =======================================================================
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-
-Object.assign(document.body.style, styles.globalBody); 
-
-root.render(
+ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         <App />
     </React.StrictMode>
 );
+
+// Pwede mo rin palitan ang App.jsx ang pangalan ng file na ito, basta tama ang path
+// na ginagamit sa index.html at ang import sa taas.
