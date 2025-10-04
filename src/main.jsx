@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
-import './App.css'; // 👈 IMPORTANTE: Dito namin kukunin ang lahat ng styling!
-
-// =======================================================================
-// APP COMPONENT
-// =======================================================================
+import './App.css'; 
 
 function App() {
     // State para sa Mobile Menu
@@ -336,6 +332,3 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <App />
     </React.StrictMode>
 );
-
-// Pwede mo rin palitan ang App.jsx ang pangalan ng file na ito, basta tama ang path
-// na ginagamit sa index.html at ang import sa taas.
