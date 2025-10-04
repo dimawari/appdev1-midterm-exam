@@ -1,16 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 
-// NOTE: Dahil gusto mong maging iisang file lang, 
-// inalis ang external imports tulad ng './App.jsx', './index.css', './App.css'.
-// Ang styles ay gagamitin na lang na inline styles.
-
-// =======================================================================
-// 1. STYLES (Ginawang JavaScript Object para sa Inline Styling)
-// =======================================================================
 
 const styles = {
-    // --- Global Variables (CSS Custom Properties) ---
     rootVariables: {
         '--primary-color': '#6366f1',
         '--text-light': '#ffffff',
@@ -22,14 +14,8 @@ const styles = {
         '--shadow-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
         '--shadow-2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
         '--bg-card': 'rgba(255, 255, 255, 0.95)',
-        // ... iba pang variables
     },
     
-    // NOTE: Para magamit ang CSS variables tulad ng 'var(--primary-color)', 
-    // kailangan ito ng base CSS file (o dynamic style injection sa <style> tag). 
-    // Para simple, gagamit muna tayo ng hardcoded values o dynamic styles na walang var().
-
-    // --- Base & Utility Styles ---
     globalBody: {
         fontFamily: "'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif",
         lineHeight: 1.7,
@@ -42,7 +28,6 @@ const styles = {
         boxSizing: 'border-box',
     },
 
-    // --- Navigation Styles (Partial) ---
     nav: {
         position: 'fixed',
         top: 0,
@@ -73,18 +58,13 @@ const styles = {
     logo: {
         fontSize: '1.75rem',
         fontWeight: 700,
-        // Kailangan ng external CSS para sa background-clip: text at transparent color
-        // For now, gagamit ng solid color
         color: '#6366f1', 
         letterSpacing: '-0.5px',
     },
     
-    // ... iba pang styles (nav-links, hero, footer, atbp.) na hindi kinaya i-define sa iisang file 
-    // dahil sa pseudo-elements at media queries.
-
-    // --- Mobile Menu Toggle (JSX Conditional Style) ---
+   
     mobileMenuToggle: {
-        display: 'none', // Dapat may media query para lumabas
+        display: 'none', 
         flexDirection: 'column',
         cursor: 'pointer',
         padding: '0.5rem',
@@ -128,11 +108,6 @@ const styles = {
     }
 };
 
-
-// =======================================================================
-// 2. APP COMPONENT (Pinagsamang HTML Structure)
-// =======================================================================
-
 function App() {
     // State para sa Mobile Menu
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -169,11 +144,7 @@ function App() {
     };
 
     return (
-        <React.Fragment>
-            {/* HTML Body equivalent style: Kailangan ng actual CSS file para ma-apply ito sa <body> */}
-            {/* Sa React, ang body styles ay karaniwang nasa index.css */}
-
-            {/* Navigation Bar */}
+        <>
             <nav id="navbar" style={navStyle}>
                 <div style={styles.navContainer}>
                     <div className="logo" style={styles.logo}>Personal Shape</div>
@@ -284,7 +255,7 @@ function App() {
                             Ready to bring your vision to life? Let's discuss how we can create something amazing together.
                         </p>
                         
-                        {/* Contact Form: Kailangan ng form handling logic */}
+                  
                         <form className="contact-form fade-in" style={styles.contactForm}>
                              {/* ... form fields and button ... */}
                         </form>
@@ -307,21 +278,14 @@ function App() {
                 </div>
             </footer>
             
-        </React.Fragment>
+        </>
     );
 }
 
 
-// =======================================================================
-// 3. RENDER THE APP
-// =======================================================================
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-// I-inject natin ang body style (simpleng paraan, sa totoong app, nasa CSS file ito)
 Object.assign(document.body.style, styles.globalBody); 
-// NOTE: Ang ibang styles na gumagamit ng 'var(--...)' ay hindi gagana maliban kung i-inject din 
-// ang CSS variables sa <style> tag o sa document.documentElement.style.
 
 root.render(
     <React.StrictMode>
